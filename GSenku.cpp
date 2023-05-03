@@ -30,6 +30,69 @@ void tokentoenum(const char token, tpEstadoCelda &celdaActual) {
         celdaActual = OCUPADA;
     }
 }
+/*
+ * Pre: Tablero contiene el tablero en el estado actual, la solucionParcial contiene la lista de movimiento efectuados hasta ahora, y el caso 
+ *      contiene el número de movimiento dentro del vector. 
+ * Post: a lista de movimientos se le ha añadido el movimiento efectuado, y de tablero se ha eliminado la casilla necesaria.
+ * 
+ */
+void moverFicha(tpTablero &tablero, tpListaMovimientoss &solucionParcial, int caso) {
+    switch (case)
+    {
+    case 1:
+        solucionParcial.movs[solucionParcial.numMovs].destino.x = solucionParcial.movs[solucionParcial.numMovs].destino.x - 2;
+        solucionParcial.movs[solucionParcial.numMovs].destino.y = solucionParcial.movs[solucionParcial.numMovs].destino.y - 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x - 1][solucionParcial.movs[solucionParcial.numMovs].destino.y - 1] = VACIA;
+        break;
+    case 2;
+        solucionParcial.movs[solucionParcial.numMovs].destino.y = solucionParcial.movs[solucionParcial.numMovs].destino.y - 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x][solucionParcial.movs[solucionParcial.numMovs].destino.y - 1] = VACIA;
+        break;
+    case 3:
+        solucionParcial.movs[solucionParcial.numMovs].destino.x = solucionParcial.movs[solucionParcial.numMovs].destino.x + 2;
+        solucionParcial.movs[solucionParcial.numMovs].destino.y = solucionParcial.movs[solucionParcial.numMovs].destino.y - 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x + 1][solucionParcial.movs[solucionParcial.numMovs].destino.y - 1] = VACIA;
+        break;
+    case 4:
+        solucionParcial.movs[solucionParcial.numMovs].destino.x = solucionParcial.movs[solucionParcial.numMovs].destino.x - 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x - 1][solucionParcial.movs[solucionParcial.numMovs].destino.y] = VACIA;
+        break;
+    case 5:
+        solucionParcial.movs[solucionParcial.numMovs].destino.x = solucionParcial.movs[solucionParcial.numMovs].destino.x + 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x + 1][solucionParcial.movs[solucionParcial.numMovs].destino.y] = VACIA;
+        break;
+    case 6:
+        solucionParcial.movs[solucionParcial.numMovs].destino.x = solucionParcial.movs[solucionParcial.numMovs].destino.x - 2;
+        solucionParcial.movs[solucionParcial.numMovs].destino.y = solucionParcial.movs[solucionParcial.numMovs].destino.y + 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x - 1][solucionParcial.movs[solucionParcial.numMovs].destino.y + 1] = VACIA;
+        break;
+    case 7:
+        solucionParcial.movs[solucionParcial.numMovs].destino.y = solucionParcial.movs[solucionParcial.numMovs].destino.y + 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x][solucionParcial.movs[solucionParcial.numMovs].destino.y + 1] = VACIA;
+        break;
+    case 8:
+        solucionParcial.movs[solucionParcial.numMovs].destino.x = solucionParcial.movs[solucionParcial.numMovs].destino.x + 2;
+        solucionParcial.movs[solucionParcial.numMovs].destino.y = solucionParcial.movs[solucionParcial.numMovs].destino.y + 2;
+        tablero.matriz[solucionParcial.movs[solucionParcial.numMovs].destino.x + 1][solucionParcial.movs[solucionParcial.numMovs].destino.y + 1] = VACIA;
+        break;
+    default:
+        break;
+    }
+}
+
+char enumToToken(const tpEstadoCelda &celdaActual) {
+
+    //assert(celdaActual == OCUPADA || celdaActual == NO_USADA || celdaActual == VACIA);
+    if (celdaActual == NO_USADA) {
+        return '-';
+    }
+    else if(celdaActual == OCUPADA) {
+        return 'x';
+    }
+    else {
+        return 'o';
+    } 
+}
 
 bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
     ifstream f;
@@ -45,7 +108,6 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
         //Metemos los datos leidos en su respectivo lugar
         tablero.ncols = stoi(numCols);
         tablero.nfils = stoi(numFils);
-        TRACE(tablero.ncols);
         
         //Declaramos variables necesarias para poder recorrer y leer el tablero
         char estado;
@@ -55,7 +117,6 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
         
         //Bucle para recorrer e inicializar el tablero
         while(f.get(estado)) {
-
             //Nos quitamos los espacios y los saltos de línea
             f.get(descarte)   ;     
 
@@ -64,10 +125,11 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
             tokentoenum(estado, estadoCelda);
             //Guardamos el estado de la celda en la matriz
             tablero.matriz[colAct][filAct] = estadoCelda;
+            // TRACE cout << tablero.matriz[colAct][filAct] << " " << colAct << " " << filAct << endl;
             
             //Necesario para poder recorrer el tablero
             colAct++;
-            if(colAct = tablero.ncols - 1) {
+            if(colAct == tablero.ncols) {
                 colAct = 0;
                 filAct++;
             }
@@ -79,6 +141,7 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
     //Caso en el que haya algun tipo de error abriendo el fichero
     else {
         return false;
+        cerr << "Ha habido algun problema abriendo el fichero: " << nombreFichero << endl;
     }
 
 }
@@ -117,16 +180,64 @@ bool inicializarMovimientosValidos (const string nombreFichero, tpMovimientosVal
     else {
         //Si ha habido algun error abriendo el fichero devolvemos false
         return false;
+        cerr << "Ha habido algun problema abriendo el fichero: " << nombreFichero << endl;
     }
 }
 
-int main() {
-    const string movs = "movimientos.txt";
-    tpMovimientosValidos moves;
-    inicializarMovimientosValidos(movs, moves);
-    for(int i = 0; i < 8; i++) {
-        TRACE(moves.validos[i]);
+void mostrarTablero(const tpTablero &tablero) {
+    int posx = tablero.ncols;
+    int posy = tablero.nfils;
+    
+
+    for (int posx = tablero.ncols - 1; posx >= 0; posx--) {
+        for(int posy = tablero.nfils - 1; posy >= 0; posy--) {
+            
+            cout << enumToToken(tablero.matriz[posx][posy]) << " ";
+
+            if(posy == 0) {
+                cout << endl;
+            }
+        }
+    }
+}
+
+void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &solucion) {
+    //Creamos y abrimos el flujo
+    ofstream f;
+    f.open(nombreFichero);
+    //Comprobamos si se ha abierto o creado con éxito
+    if(f.is_open()) {
+        //Comprobamos si no esta vacia la lista de solucion
+        if(solucion.numMovs == 0) {
+            f << "-1" << endl;
+        }
+        //En caso de que no este vacía:
+        else {
+            for(int i = 0; i < solucion.numMovs; i++) {
+                //Guardamos, para cada movimiento, los movimientos realizados en el fichero
+                f << solucion.movs[i].origen.x << ", " << solucion.movs[i].origen.y << ":" << solucion.movs[i].destino.x << ", " << solucion.movs[i].destino.y << endl;
+            }
+        }
+    }
+    else {
+        //En caso de que no se haya podido abrir, imprimimos un error.
+        cerr << "No se ha podido crear o abrir el fichero " << nombreFichero << "." << endl;
+    }
+}
+
+int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo=0) {
+    if (estaVacio(tablero)) {
+        return 0; 
+    }
+
+    else if(!esValido) {
+
+    }
+
+    else {
+        if(retardo > 0) {
+            mostrarTablero(tablero)
+        }
     }
     
 }
-
