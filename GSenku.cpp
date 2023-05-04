@@ -7,8 +7,8 @@
 #define microsecond 1000000
 
 //Funcion para poder hacer debug sin debugger
-#ifdef _DEBUG_MODE_1
-#define TRACE(a) std::cout << a << '\n'
+#ifdef _DEBUG_MODE_
+#define (a) std::cout << a << '\n'
 #else
 #define TRACE(a)
 #endif
@@ -33,7 +33,7 @@ void tokentoenum(const char token, tpEstadoCelda &celdaActual) {
     }
 }
 
-bool nLlenas(tpTablero &tablero) {
+int nLlenas(tpTablero &tablero) {
     int nLlenas = 0;
     for(int i = 0; i < tablero.ncols; i++) {
         for (int j = 0; j < tablero.nfils; j++) {
@@ -143,6 +143,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     default:
+        return false;
         break;
     }
 }
@@ -176,6 +177,7 @@ void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial,
         tablero.matriz[x + 1][y + 1] = OCUPADA;
         break;
     default:
+        return false;
         break;
     }
 }
@@ -237,7 +239,6 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
             tokentoenum(estado, estadoCelda);
             //Guardamos el estado de la celda en la matriz
             tablero.matriz[colAct][filAct] = estadoCelda;
-            // TRACE cout << tablero.matriz[colAct][filAct] << " " << colAct << " " << filAct << endl;
             
             //Necesario para poder recorrer el tablero
             colAct++;
