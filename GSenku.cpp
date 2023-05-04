@@ -67,7 +67,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     case 2:
-        if(tablero.matriz[x][y - 1] == OCUPADA && y - 1 > 0) {
+        if(tablero.matriz[x][y - 1] == OCUPADA && y - 2 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x][y - 1] = VACIA;
             solucionParcial.numMovs++;
@@ -79,7 +79,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     case 3:
-        if(tablero.matriz[x + 1][y - 1] == OCUPADA && x + 1 < tablero.ncols && y > 0) {
+        if(tablero.matriz[x + 1][y - 1] == OCUPADA && x + 2 < tablero.ncols && y - 2 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x + 1][y + 1] = VACIA;
@@ -91,7 +91,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         break;
     case 4:
-        if(tablero.matriz[x - 1][y] == OCUPADA && x < 0) {
+        if(tablero.matriz[x - 1][y] == OCUPADA && x - 2 < 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             tablero.matriz[x - 1][y] = VACIA;
             solucionParcial.numMovs++;
@@ -102,7 +102,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         break;
     case 5:
-        if(tablero.matriz[x + 1][y] == OCUPADA && x + 1 < tablero.ncols) {
+        if(tablero.matriz[x + 1][y] == OCUPADA && x + 2 < tablero.ncols) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             tablero.matriz[x + 1][y] = VACIA;
             solucionParcial.numMovs++;
@@ -113,7 +113,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         break;
     case 6:
-        if(tablero.matriz[x - 1][y + 1] == OCUPADA && x - 1 > 0 && y + 1 < tablero.nfils) {
+        if(tablero.matriz[x - 1][y + 1] == OCUPADA && x - 2 > 0 && y + 2 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
             tablero.matriz[x - 1][y + 1] = VACIA;
@@ -126,7 +126,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     case 7:
-        if(tablero.matriz[x][y + 1] == OCUPADA && y + 1 < tablero.nfils) {
+        if(tablero.matriz[x][y + 1] == OCUPADA && y + 2 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
             tablero.matriz[x][y + 1] = VACIA;
             solucionParcial.numMovs++;
@@ -138,7 +138,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
 
         break;
     case 8:
-        if(tablero.matriz[x + 1][y + 1] == OCUPADA && x + 1 < tablero.ncols && y + 1 < tablero.nfils) {
+        if(tablero.matriz[x + 1][y + 1] == OCUPADA && x + 2 < tablero.ncols && y + 1 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
             tablero.matriz[x + 1][y + 1] = VACIA;
