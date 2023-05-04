@@ -338,7 +338,7 @@ void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &so
     }
 }
 
-int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo=0) {
+int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo) {
     if (nLlenas(tablero) == 1) {
         cout << "Se ha resuelto el tablero en " << solucionParcial.numMovs << " movimientos." << endl;
         return 0;
