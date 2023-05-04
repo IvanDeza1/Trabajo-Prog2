@@ -7,8 +7,8 @@
 #define microsecond 1000000
 
 //Funcion para poder hacer debug sin debugger
-#ifdef _DEBUG_MODE_
-#define (a) std::cout << a << '\n'
+#ifdef _DEBUG_MODE_1
+#define TRACE(a) std::cout << a << '\n'
 #else
 #define TRACE(a)
 #endif
@@ -33,7 +33,7 @@ void tokentoenum(const char token, tpEstadoCelda &celdaActual) {
     }
 }
 
-int nLlenas(tpTablero &tablero) {
+bool nLlenas(tpTablero &tablero) {
     int nLlenas = 0;
     for(int i = 0; i < tablero.ncols; i++) {
         for (int j = 0; j < tablero.nfils; j++) {
@@ -42,7 +42,6 @@ int nLlenas(tpTablero &tablero) {
             }
         }
     }
-    return nLlenas;
 }
 
 /* TODO: Corregir movimientos.
@@ -55,10 +54,11 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
     switch (caso)
     {
     case 1:
-        if(tablero.matriz[x - 1][y - 1] == OCUPADA) {
+        if(tablero.matriz[x - 1][y - 1] == OCUPADA && x - 2 > 0 && y - 2 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x - 1][y - 1] = VACIA;
+            solucionParcial.numMovs++;
             return true;
         }
         else {
@@ -67,9 +67,10 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     case 2:
-        if(tablero.matriz[x][y - 1] == OCUPADA) {
+        if(tablero.matriz[x][y - 1] == OCUPADA && y - 1 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x][y - 1] = VACIA;
+            solucionParcial.numMovs++;
             return false;
         }
         else {
@@ -78,10 +79,11 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     case 3:
-        if(tablero.matriz[x + 1][y - 1] == OCUPADA) {
+        if(tablero.matriz[x + 1][y - 1] == OCUPADA && x + 1 < tablero.ncols && y > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x + 1][y + 1] = VACIA;
+            solucionParcial.numMovs++;
             return true;
         }
         else {
@@ -89,9 +91,10 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         break;
     case 4:
-        if(tablero.matriz[x - 1][y] == OCUPADA) {
+        if(tablero.matriz[x - 1][y] == OCUPADA && x < 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             tablero.matriz[x - 1][y] = VACIA;
+            solucionParcial.numMovs++;
         return true;
         }
         else {
@@ -99,9 +102,10 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         break;
     case 5:
-        if(tablero.matriz[x + 1][y] == OCUPADA) {
+        if(tablero.matriz[x + 1][y] == OCUPADA && x + 1 < tablero.ncols) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             tablero.matriz[x + 1][y] = VACIA;
+            solucionParcial.numMovs++;
             return true;
         }
         else {
@@ -109,10 +113,11 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         break;
     case 6:
-        if(tablero.matriz[x - 1][y + 1] == OCUPADA) {
+        if(tablero.matriz[x - 1][y + 1] == OCUPADA && x - 1 > 0 && y + 1 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
             tablero.matriz[x - 1][y + 1] = VACIA;
+            solucionParcial.numMovs++;
             return true;
         }
         else {
@@ -121,9 +126,10 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     case 7:
-        if(tablero.matriz[x][y + 1] == OCUPADA) {
+        if(tablero.matriz[x][y + 1] == OCUPADA && y + 1 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
             tablero.matriz[x][y + 1] = VACIA;
+            solucionParcial.numMovs++;
             return true;
         }
         else {
@@ -132,10 +138,11 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
 
         break;
     case 8:
-        if(tablero.matriz[x + 1][y + 1] == OCUPADA) {
+        if(tablero.matriz[x + 1][y + 1] == OCUPADA && x + 1 < tablero.ncols && y + 1 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
             tablero.matriz[x + 1][y + 1] = VACIA;
+            solucionParcial.numMovs++;
             return true;
         }
         else {
@@ -144,7 +151,6 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     default:
-        return false;
         break;
     }
 }
@@ -180,6 +186,18 @@ void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial,
     default:
         break;
     }
+}
+
+/*
+ * TODO
+ */
+bool movimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial, const tpMovimientosValidos &movValidos) {
+
+return 0;
+/*
+    int posiciones[8][1];
+    inicializarPosiciones(posiciones)
+*/
 }
 
 char enumToToken(const tpEstadoCelda &celdaActual) {
@@ -227,6 +245,7 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
             tokentoenum(estado, estadoCelda);
             //Guardamos el estado de la celda en la matriz
             tablero.matriz[colAct][filAct] = estadoCelda;
+            // TRACE cout << tablero.matriz[colAct][filAct] << " " << colAct << " " << filAct << endl;
             
             //Necesario para poder recorrer el tablero
             colAct++;
@@ -326,7 +345,7 @@ void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &so
     }
 }
 
-int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo) {
+int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo=0) {
     if (nLlenas(tablero) == 1) {
         cout << "Se ha resuelto el tablero en " << solucionParcial.numMovs << " movimientos." << endl;
         return 0;
