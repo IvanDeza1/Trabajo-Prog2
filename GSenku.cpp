@@ -42,6 +42,7 @@ int nLlenas(tpTablero &tablero) {
             }
         }
     }
+    return nLlenas;
 }
 
 /* TODO: Corregir movimientos.
@@ -177,21 +178,8 @@ void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial,
         tablero.matriz[x + 1][y + 1] = OCUPADA;
         break;
     default:
-        return false;
         break;
     }
-}
-
-/*
- * TODO
- */
-bool movimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial, const tpMovimientosValidos &movValidos) {
-
-return 0;
-/*
-    int posiciones[8][1];
-    inicializarPosiciones(posiciones)
-*/
 }
 
 char enumToToken(const tpEstadoCelda &celdaActual) {
