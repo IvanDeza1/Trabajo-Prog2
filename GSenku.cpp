@@ -7,7 +7,7 @@
 #define microsecond 1000000
 
 //Funcion para poder hacer debug sin debugger
-#ifdef _DEBUG_MODE_1
+#ifdef _DEBUG_MODE_
 #define TRACE(a) std::cout << a << '\n'
 #else
 #define TRACE(a)
