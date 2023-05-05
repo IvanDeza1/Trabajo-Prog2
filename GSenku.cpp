@@ -7,7 +7,7 @@
 #define microsecond 1000000
 
 //Funcion para poder hacer debug sin debugger
-#ifdef _DEBUG_MODE_
+#ifdef _DEBUG_MODE_1
 #define TRACE(a) std::cout << a << '\n'
 #else
 #define TRACE(a)
@@ -31,6 +31,7 @@ void tokentoenum(const char token, tpEstadoCelda &celdaActual) {
     else if(token == 'x') {
         celdaActual = OCUPADA;
     }
+    TRACE("PASE POR TOKENTOENUM");
 }
 
 int nLlenas(tpTablero &tablero) {
@@ -39,6 +40,7 @@ int nLlenas(tpTablero &tablero) {
         for (int j = 0; j < tablero.nfils; j++) {
             if(tablero.matriz[i][j] == OCUPADA) {
                 nLlenas++;
+                TRACE("PASE POR NLLENAS");
             }
         }
     }
@@ -52,6 +54,7 @@ int nLlenas(tpTablero &tablero) {
  * 
  */
 bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int caso,const int x,const  int y) {
+    TRACE("PASE POR VALIDARYMOVER");
     switch (caso)
     {
     case 1:
@@ -152,12 +155,14 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     default:
+    return false;
         break;
     }
 }
 
 void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial, int caso,const int x,const  int y) {
     solucionParcial.numMovs--;
+    TRACE("PASE POR DESHACER MOVIMIENTO");
     switch (caso)
     {
     case 1:
@@ -190,7 +195,7 @@ void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial,
 }
 
 char enumToToken(const tpEstadoCelda &celdaActual) {
-
+    TRACE("PASE POR ENUMTOTOKEN");
     //assert(celdaActual == OCUPADA || celdaActual == NO_USADA || celdaActual == VACIA);
     if (celdaActual == NO_USADA) {
         return '-';
@@ -204,6 +209,7 @@ char enumToToken(const tpEstadoCelda &celdaActual) {
 }
 
 bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
+    TRACE("PASE POR INICIALTAB");
     ifstream f;
     f.open(nombreFichero);
     if(f.is_open()) {
@@ -256,13 +262,14 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
 }
 
 bool inicializarMovimientosValidos (const string nombreFichero, tpMovimientosValidos &movimientos) {
+    TRACE("PASE POR INITMOVS");
     ifstream f;
     f.open(nombreFichero);
 
 
     if(f.is_open()) {
         //Declaramos las variables necesarias
-        int pos = 0;
+        int pos = 1;
         char estado;
         char descarte;
         //Bucle que recorre el fichero de movimientos
@@ -294,6 +301,7 @@ bool inicializarMovimientosValidos (const string nombreFichero, tpMovimientosVal
 }
 
 void mostrarTablero(const tpTablero &tablero) {
+    TRACE("PASE POR MOSTRARTAB");
     int posx = tablero.ncols;
     int posy = tablero.nfils;
     
@@ -311,6 +319,7 @@ void mostrarTablero(const tpTablero &tablero) {
 }
 
 void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &solucion) {
+    TRACE("PASE POR ESCLISTMOVS");
     //Creamos y abrimos el flujo
     ofstream f;
     f.open(nombreFichero);
@@ -335,6 +344,7 @@ void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &so
 }
 
 int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo) {
+    TRACE("PASE POR BUSCASOL AL MENOS 1 VEZ");
     if (nLlenas(tablero) == 1) {
         cout << "Se ha resuelto el tablero en " << solucionParcial.numMovs << " movimientos." << endl;
         return 0;
