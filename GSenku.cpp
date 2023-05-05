@@ -33,7 +33,7 @@ void tokentoenum(const char token, tpEstadoCelda &celdaActual) {
     }
 }
 
-bool nLlenas(tpTablero &tablero) {
+int nLlenas(tpTablero &tablero) {
     int nLlenas = 0;
     for(int i = 0; i < tablero.ncols; i++) {
         for (int j = 0; j < tablero.nfils; j++) {
@@ -42,6 +42,7 @@ bool nLlenas(tpTablero &tablero) {
             }
         }
     }
+    return nLlenas;
 }
 
 /* TODO: Corregir movimientos.
@@ -186,18 +187,6 @@ void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial,
     default:
         break;
     }
-}
-
-/*
- * TODO
- */
-bool movimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial, const tpMovimientosValidos &movValidos) {
-
-return 0;
-/*
-    int posiciones[8][1];
-    inicializarPosiciones(posiciones)
-*/
 }
 
 char enumToToken(const tpEstadoCelda &celdaActual) {
@@ -345,7 +334,7 @@ void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &so
     }
 }
 
-int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo=0) {
+int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo) {
     if (nLlenas(tablero) == 1) {
         cout << "Se ha resuelto el tablero en " << solucionParcial.numMovs << " movimientos." << endl;
         return 0;
