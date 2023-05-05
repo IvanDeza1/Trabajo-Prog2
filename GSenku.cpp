@@ -31,7 +31,6 @@ void tokentoenum(const char token, tpEstadoCelda &celdaActual) {
     else if(token == 'x') {
         celdaActual = OCUPADA;
     }
-    TRACE("PASE POR TOKENTOENUM");
 }
 
 int nLlenas(tpTablero &tablero) {
@@ -40,7 +39,6 @@ int nLlenas(tpTablero &tablero) {
         for (int j = 0; j < tablero.nfils; j++) {
             if(tablero.matriz[i][j] == OCUPADA) {
                 nLlenas++;
-                TRACE("PASE POR NLLENAS");
             }
         }
     }
@@ -54,10 +52,9 @@ int nLlenas(tpTablero &tablero) {
  * 
  */
 bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int caso,const int x,const  int y) {
-    TRACE("PASE POR VALIDARYMOVER");
     switch (caso)
     {
-    case 1:
+    case 0:
         if(tablero.matriz[x - 1][y - 1] == OCUPADA && x - 2 > 0 && y - 2 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
@@ -70,7 +67,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         
         break;
-    case 2:
+    case 1:
         if(tablero.matriz[x][y - 1] == OCUPADA && y - 2 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x][y - 1] = VACIA;
@@ -82,7 +79,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         
         break;
-    case 3:
+    case 2:
         if(tablero.matriz[x + 1][y - 1] == OCUPADA && x + 2 < tablero.ncols && y - 2 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
@@ -94,7 +91,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
             return false;
         }
         break;
-    case 4:
+    case 3:
         if(tablero.matriz[x - 1][y] == OCUPADA && x - 2 < 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             tablero.matriz[x - 1][y] = VACIA;
@@ -105,7 +102,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
             return false;
         }
         break;
-    case 5:
+    case 4:
         if(tablero.matriz[x + 1][y] == OCUPADA && x + 2 < tablero.ncols) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             tablero.matriz[x + 1][y] = VACIA;
@@ -116,7 +113,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
             return false;
         }
         break;
-    case 6:
+    case 5:
         if(tablero.matriz[x - 1][y + 1] == OCUPADA && x - 2 > 0 && y + 2 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
@@ -129,7 +126,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
         
         break;
-    case 7:
+    case 6:
         if(tablero.matriz[x][y + 1] == OCUPADA && y + 2 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
             tablero.matriz[x][y + 1] = VACIA;
@@ -141,7 +138,7 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         }
 
         break;
-    case 8:
+    case 7:
         if(tablero.matriz[x + 1][y + 1] == OCUPADA && x + 2 < tablero.ncols && y + 1 < tablero.nfils) {
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
@@ -155,38 +152,37 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
         
         break;
     default:
-    return false;
+        return false;
         break;
     }
 }
 
 void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial, int caso,const int x,const  int y) {
     solucionParcial.numMovs--;
-    TRACE("PASE POR DESHACER MOVIMIENTO");
     switch (caso)
     {
-    case 1:
+    case 0:
         tablero.matriz[x - 1][y - 1] = OCUPADA;
         break;
-    case 2:
+    case 1:
             tablero.matriz[x][y - 1] = OCUPADA; 
         break;
-    case 3:
+    case 2:
         tablero.matriz[x + 1][y + 1] = OCUPADA;
         break;
-    case 4:
+    case 3:
         tablero.matriz[x - 1][y] = OCUPADA;
         break;
-    case 5:
+    case 4:
         tablero.matriz[x + 1][y] = OCUPADA;
         break;
-    case 6:
+    case 5:
         tablero.matriz[x - 1][y + 1] = OCUPADA; 
         break;
-    case 7:
+    case 6:
         tablero.matriz[x][y + 1] = OCUPADA;
         break;
-    case 8:
+    case 7:
         tablero.matriz[x + 1][y + 1] = OCUPADA;
         break;
     default:
@@ -195,7 +191,7 @@ void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial,
 }
 
 char enumToToken(const tpEstadoCelda &celdaActual) {
-    TRACE("PASE POR ENUMTOTOKEN");
+
     //assert(celdaActual == OCUPADA || celdaActual == NO_USADA || celdaActual == VACIA);
     if (celdaActual == NO_USADA) {
         return '-';
@@ -209,7 +205,6 @@ char enumToToken(const tpEstadoCelda &celdaActual) {
 }
 
 bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
-    TRACE("PASE POR INICIALTAB");
     ifstream f;
     f.open(nombreFichero);
     if(f.is_open()) {
@@ -219,6 +214,7 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
         //Leemos y almacenamos el número de filas y de columnas
         getline(f, numCols, ' ');
         getline(f, numFils, '\n');
+        
 
         //Metemos los datos leidos en su respectivo lugar
         tablero.ncols = stoi(numCols);
@@ -232,9 +228,9 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
         
         //Bucle para recorrer e inicializar el tablero
         while(f.get(estado)) {
-            //Nos quitamos los espacios y los saltos de línea
-            f.get(descarte)   ;     
 
+            f.get(descarte);
+            
             tpEstadoCelda estadoCelda;
             //Convertimos el token al valor de la enumeracion
             tokentoenum(estado, estadoCelda);
@@ -262,14 +258,14 @@ bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
 }
 
 bool inicializarMovimientosValidos (const string nombreFichero, tpMovimientosValidos &movimientos) {
-    TRACE("PASE POR INITMOVS");
+    TRACE("SE HAN INICIALIZADO LOS MOVS");
     ifstream f;
     f.open(nombreFichero);
 
 
     if(f.is_open()) {
         //Declaramos las variables necesarias
-        int pos = 1;
+        int pos = 0;
         char estado;
         char descarte;
         //Bucle que recorre el fichero de movimientos
@@ -301,25 +297,50 @@ bool inicializarMovimientosValidos (const string nombreFichero, tpMovimientosVal
 }
 
 void mostrarTablero(const tpTablero &tablero) {
-    TRACE("PASE POR MOSTRARTAB");
-    int posx = tablero.ncols;
-    int posy = tablero.nfils;
-    
 
-    for (int posx = tablero.ncols - 1; posx >= 0; posx--) {
-        for(int posy = tablero.nfils - 1; posy >= 0; posy--) {
+    for (int posy = 0; posy < tablero.nfils; posy++) {
+        cout << endl;
+        for(int posx = 0; posx < tablero.ncols; posx++) {
             
             cout << enumToToken(tablero.matriz[posx][posy]) << " ";
-
-            if(posy == 0) {
-                cout << endl;
-            }
         }
     }
 }
 
+
+
+int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo) {
+    if (nLlenas(tablero) == 1) {
+        cout << "Se ha resuelto el tablero en " << solucionParcial.numMovs << " movimientos." << endl;
+        mostrarTablero(tablero);
+        return 0;
+    }
+    else {
+        for(int x = 0; x < tablero.ncols; x++) {
+            for (int y = 0; y < tablero.nfils; y++) {
+                for(int i = 0; i < 8; i++) {
+                    if(validarYMover(tablero, solucionParcial, i, x, y)) {
+                        if(retardo > 0) {
+                            mostrarTablero(tablero);
+                            usleep(retardo*microsecond);
+                        }
+                        if (buscaSolucion(tablero, movValidos, solucionParcial, retardo) == 0){
+                            return 0;
+                            //Se ha encontrado la solucion
+                        }
+                    }
+                    else if(solucionParcial.numMovs > 0){
+                        deshacerMovimiento(tablero, solucionParcial, i, x, y);
+                    }
+                }
+            }
+        } 
+        return -1;   
+    }
+}
+
 void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &solucion) {
-    TRACE("PASE POR ESCLISTMOVS");
+    TRACE("SE HA PASADO POR ELDM");
     //Creamos y abrimos el flujo
     ofstream f;
     f.open(nombreFichero);
@@ -340,34 +361,5 @@ void escribeListaMovimientos (string nombreFichero, const tpListaMovimientos &so
     else {
         //En caso de que no se haya podido abrir, imprimimos un error.
         cerr << "No se ha podido crear o abrir el fichero " << nombreFichero << "." << endl;
-    }
-}
-
-int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo) {
-    TRACE("PASE POR BUSCASOL AL MENOS 1 VEZ");
-    if (nLlenas(tablero) == 1) {
-        cout << "Se ha resuelto el tablero en " << solucionParcial.numMovs << " movimientos." << endl;
-        return 0;
-    }
-    else {
-        for(int x = 0; x < tablero.ncols; x++) {
-            for (int y = 0; y < tablero.nfils; y++) {
-                for(int i = 1; i < 9; i++) {
-                    if(validarYMover(tablero, solucionParcial, i, x, y)) {
-                        if(retardo > 0) {
-                            mostrarTablero(tablero);
-                            usleep(retardo*microsecond);
-                        }
-                        if (buscaSolucion(tablero, movValidos, solucionParcial, retardo) == 0);
-                            return 0;
-                            //Se ha encontrado la solución
-                    }
-                    else {
-                        deshacerMovimiento(tablero, solucionParcial, i, x, y);
-                    }
-                }
-            }
-        } 
-        return -1;   
     }
 }
