@@ -59,6 +59,8 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x - 1][y - 1] = VACIA;
+            tablero.matriz[x - 2][y - 2] = OCUPADA;
+            tablero.matriz[x][y] = VACIA;
             solucionParcial.numMovs++;
             return true;
         }
@@ -70,8 +72,11 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
     case 1:
         if(tablero.matriz[x][y - 1] == OCUPADA && y - 2 > 0) {
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
+            solucionParcial.movs[solucionParcial.numMovs].destino.x = x;
             tablero.matriz[x][y - 1] = VACIA;
             solucionParcial.numMovs++;
+            tablero.matriz[x][y - 2] = OCUPADA;
+            tablero.matriz[x][y] = VACIA;
             return false;
         }
         else {
@@ -84,6 +89,8 @@ bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int 
             solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
             solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
             tablero.matriz[x + 1][y + 1] = VACIA;
+            tablero.matriz[x + 2][y - 2] = OCUPADA;
+            tablero.matriz[x][y] = VACIA;
             solucionParcial.numMovs++;
             return true;
         }
@@ -203,6 +210,11 @@ char enumToToken(const tpEstadoCelda &celdaActual) {
         return 'o';
     } 
 }
+
+bool estaLibre(tpPosicion &posicion) {
+    if(tablero.matriz[posicion.x][posicion.y])
+}
+
 
 bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
     ifstream f;
