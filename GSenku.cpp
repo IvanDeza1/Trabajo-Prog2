@@ -7,7 +7,7 @@
 #define microsecond 1000000
 
 //Funcion para poder hacer debug sin debugger
-#ifdef _DEBUG_MODE_1
+#ifdef _DEBUG_MODE_
 #define TRACE(a) std::cout << a << '\n'
 #else
 #define TRACE(a)
@@ -45,156 +45,81 @@ int nLlenas(tpTablero &tablero) {
     return nLlenas;
 }
 
-/* TODO: Corregir movimientos.
+/* 
  * Pre: Tablero contiene el tablero en el estado actual, la solucionParcial contiene la lista de movimiento efectuados hasta ahora, y el caso 
  *      contiene el número de movimiento dentro del vector. 
  * Post: a lista de movimientos se le ha añadido el movimiento efectuado, y de tablero se ha eliminado la casilla necesaria.
  * 
  */
-bool validarYMover(tpTablero &tablero, tpListaMovimientos &solucionParcial, int caso,const int x,const  int y) {
+void getCoords(tpTablero &tablero, int caso, tpPosicion &posOr, tpPosicion &posDest, tpPosicion &posMed) {
     switch (caso)
     {
     case 0:
-        if(tablero.matriz[x - 1][y - 1] == OCUPADA && x - 2 > 0 && y - 2 > 0) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
-            solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
-            tablero.matriz[x - 1][y - 1] = VACIA;
-            tablero.matriz[x - 2][y - 2] = OCUPADA;
-            tablero.matriz[x][y] = VACIA;
-            solucionParcial.numMovs++;
-            return true;
-        }
-        else {
-            return false;
-        }
-        
+        posDest.x = posOr.x - 2;
+        posDest.y = posOr.y - 2;
+        posMed.x = posOr.x - 1;
+        posMed.y = posOr.y - 1;
         break;
     case 1:
-        if(tablero.matriz[x][y - 1] == OCUPADA && y - 2 > 0) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
-            solucionParcial.movs[solucionParcial.numMovs].destino.x = x;
-            tablero.matriz[x][y - 1] = VACIA;
-            solucionParcial.numMovs++;
-            tablero.matriz[x][y - 2] = OCUPADA;
-            tablero.matriz[x][y] = VACIA;
-            return false;
-        }
-        else {
-            return false;
-        }
-        
+        posDest.x = posOr.x;
+        posDest.y = posOr.y - 2;
+        posMed.x = posOr.x;
+        posMed.y = posOr.y - 1;
         break;
     case 2:
-        if(tablero.matriz[x + 1][y - 1] == OCUPADA && x + 2 < tablero.ncols && y - 2 > 0) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
-            solucionParcial.movs[solucionParcial.numMovs].destino.y = y - 2;
-            tablero.matriz[x + 1][y + 1] = VACIA;
-            tablero.matriz[x + 2][y - 2] = OCUPADA;
-            tablero.matriz[x][y] = VACIA;
-            solucionParcial.numMovs++;
-            return true;
-        }
-        else {
-            return false;
-        }
+        posDest.x = posOr.x + 2;
+        posDest.y = posOr.y - 2;
+        posMed.x = posOr.x + 1;
+        posMed.y = posOr.y - 1;
         break;
     case 3:
-        if(tablero.matriz[x - 1][y] == OCUPADA && x - 2 < 0) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
-            tablero.matriz[x - 1][y] = VACIA;
-            solucionParcial.numMovs++;
-        return true;
-        }
-        else {
-            return false;
-        }
+        posDest.x = posOr.x - 2;
+        posDest.y = posOr.y;
+        posMed.x = posOr.x - 1;
+        posMed.y = posOr.y;
         break;
     case 4:
-        if(tablero.matriz[x + 1][y] == OCUPADA && x + 2 < tablero.ncols) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
-            tablero.matriz[x + 1][y] = VACIA;
-            solucionParcial.numMovs++;
-            return true;
-        }
-        else {
-            return false;
-        }
+        posDest.x = posOr.x + 2;
+        posDest.y = posOr.y;
+        posMed.x = posOr.x + 1;
+        posMed.y = posOr.y;
         break;
     case 5:
-        if(tablero.matriz[x - 1][y + 1] == OCUPADA && x - 2 > 0 && y + 2 < tablero.nfils) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.x = x - 2;
-            solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
-            tablero.matriz[x - 1][y + 1] = VACIA;
-            solucionParcial.numMovs++;
-            return true;
-        }
-        else {
-            return false;
-        }
-        
-        break;
-    case 6:
-        if(tablero.matriz[x][y + 1] == OCUPADA && y + 2 < tablero.nfils) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
-            tablero.matriz[x][y + 1] = VACIA;
-            solucionParcial.numMovs++;
-            return true;
-        }
-        else {
-            return false;
-        }
 
         break;
+    case 6:
+        posDest.x = posOr.x;
+        posDest.y = posOr.y + 2;
+        posMed.x = posOr.x;
+        posMed.y = posOr.y + 1;
+        break;
     case 7:
-        if(tablero.matriz[x + 1][y + 1] == OCUPADA && x + 2 < tablero.ncols && y + 1 < tablero.nfils) {
-            solucionParcial.movs[solucionParcial.numMovs].destino.x = x + 2;
-            solucionParcial.movs[solucionParcial.numMovs].destino.y = y + 2;
-            tablero.matriz[x + 1][y + 1] = VACIA;
-            solucionParcial.numMovs++;
-            return true;
-        }
-        else {
-            return false;
-        }
-        
+        posDest.x = posOr.x + 2;
+        posDest.y = posOr.y + 2;
+        posMed.x = posOr.x + 1;
+        posMed.y = posOr.y + 1;
         break;
     default:
-        return false;
         break;
     }
 }
 
-void deshacerMovimiento(tpTablero &tablero, tpListaMovimientos &solucionParcial, int caso,const int x,const  int y) {
+void mover(tpTablero &tablero, tpListaMovimientos &solucionParcial,tpPosicion &posOr, tpPosicion &posDest, tpPosicion &posMed) {
+    tablero.matriz[posOr.x][posOr.y] = VACIA;
+    tablero.matriz[posMed.x][posMed.y] = VACIA;
+    tablero.matriz[posDest.x][posDest.y] = OCUPADA;
+    solucionParcial.movs[solucionParcial.numMovs].origen.x = posOr.x;
+    solucionParcial.movs[solucionParcial.numMovs].destino.x = posDest.x;
+    solucionParcial.movs[solucionParcial.numMovs].origen.y = posOr.y;
+    solucionParcial.movs[solucionParcial.numMovs].destino.y = posDest.y;
+    solucionParcial.numMovs++;
+}
+
+void deshacerMov(tpTablero &tablero, tpListaMovimientos &solucionParcial, tpPosicion &posOr, tpPosicion &posDest, tpPosicion &posMed) {
+    tablero.matriz[posOr.x][posOr.y] = OCUPADA;
+    tablero.matriz[posMed.x][posMed.y] = OCUPADA;
+    tablero.matriz[posDest.x][posDest.y] = VACIA;
     solucionParcial.numMovs--;
-    switch (caso)
-    {
-    case 0:
-        tablero.matriz[x - 1][y - 1] = OCUPADA;
-        break;
-    case 1:
-            tablero.matriz[x][y - 1] = OCUPADA; 
-        break;
-    case 2:
-        tablero.matriz[x + 1][y + 1] = OCUPADA;
-        break;
-    case 3:
-        tablero.matriz[x - 1][y] = OCUPADA;
-        break;
-    case 4:
-        tablero.matriz[x + 1][y] = OCUPADA;
-        break;
-    case 5:
-        tablero.matriz[x - 1][y + 1] = OCUPADA; 
-        break;
-    case 6:
-        tablero.matriz[x][y + 1] = OCUPADA;
-        break;
-    case 7:
-        tablero.matriz[x + 1][y + 1] = OCUPADA;
-        break;
-    default:
-        break;
-    }
 }
 
 char enumToToken(const tpEstadoCelda &celdaActual) {
@@ -211,10 +136,43 @@ char enumToToken(const tpEstadoCelda &celdaActual) {
     } 
 }
 
-bool estaLibre(tpPosicion &posicion) {
-    if(tablero.matriz[posicion.x][posicion.y])
+bool estaLibre(const tpTablero &tablero,const tpPosicion &posicion) {
+    if(tablero.matriz[posicion.x][posicion.y] == VACIA) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
+bool estaLlena(const tpTablero &tablero,const tpPosicion &posicion) {
+    if(tablero.matriz[posicion.x][posicion.y] == OCUPADA) {
+        return true;
+    }
+    else {
+        false;
+    }
+}
+
+bool esDentro(const tpTablero &tablero,const tpPosicion &posicion) {
+    if(posicion.x > 0 && posicion.y > 0 && posicion.x < tablero.ncols && posicion.y < tablero.nfils) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool sePuedeMover(const tpTablero &tablero, const tpPosicion &posicionLlegada, const tpPosicion &posicionMedio) {
+
+    if(estaLibre(tablero, posicionLlegada) && estaLlena(tablero, posicionMedio) && esDentro(tablero, posicionLlegada)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+
+}
 
 bool inicializarTablero(const string nombreFichero, tpTablero &tablero) {
     ifstream f;
@@ -319,19 +277,35 @@ void mostrarTablero(const tpTablero &tablero) {
     }
 }
 
-
-
 int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tpListaMovimientos &solucionParcial, const int retardo) {
+    
+    tpPosicion posOr;
+    tpPosicion posDest;
+    tpPosicion posMed;
+    tpListaMovimientos listaMovs;
+    
+    //Caso base para se ha encontrado la solucion
     if (nLlenas(tablero) == 1) {
         cout << "Se ha resuelto el tablero en " << solucionParcial.numMovs << " movimientos." << endl;
         mostrarTablero(tablero);
         return 0;
     }
+    //Mientras no se haya encontrado la solucion:
     else {
+        //Bucle que recorre todas las casillas y todos los movimientos posibles
         for(int x = 0; x < tablero.ncols; x++) {
             for (int y = 0; y < tablero.nfils; y++) {
                 for(int i = 0; i < 8; i++) {
-                    if(validarYMover(tablero, solucionParcial, i, x, y)) {
+                    //Inicializamos x e y con las coordinadas actuales
+                    posOr.x = x;
+                    posOr.y = y;
+                    //Obtenemos las coordenadas destino y la media
+                    getCoords(tablero, i, posOr, posDest, posMed);
+                    
+                    if(sePuedeMover(tablero, posDest, posMed)) {
+                        //Si la ficha se puede mover la movemos
+                        mover(tablero, listaMovs, posOr, posDest, posMed);
+                        //Si el retardo es mayor de 0 mostramos
                         if(retardo > 0) {
                             mostrarTablero(tablero);
                             usleep(retardo*microsecond);
@@ -340,13 +314,12 @@ int buscaSolucion(tpTablero &tablero, const tpMovimientosValidos &movValidos, tp
                             return 0;
                             //Se ha encontrado la solucion
                         }
-                    }
-                    else if(solucionParcial.numMovs > 0){
-                        deshacerMovimiento(tablero, solucionParcial, i, x, y);
+                        deshacerMov(tablero, solucionParcial, posOr, posDest, posMed);
                     }
                 }
             }
         } 
+        //No encontrado
         return -1;   
     }
 }
